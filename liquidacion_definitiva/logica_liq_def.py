@@ -1,9 +1,7 @@
 from datetime import date
 
 def calcular_dias_360(fecha_inicio: date, fecha_fin: date) -> int:
-    """
-    Helper: Calcula la diferencia de días usando el Año Comercial (Método Europeo).
-    """
+   
     d1, m1, y1 = fecha_inicio.day, fecha_inicio.month, fecha_inicio.year
     d2, m2, y2 = fecha_fin.day, fecha_fin.month, fecha_fin.year
     
@@ -23,12 +21,7 @@ def calcular_liquidacion_definitiva(
     dias_pendientes: int,
     es_salario_integral: bool = False
 ) -> dict:
-    """
-    Motor matemático para calcular la liquidación definitiva.
-    """
-    # ==========================================
-    # 1. CÁLCULO DE PERIODOS (DÍAS LABORADOS)
-    # ==========================================
+   
     dias_totales = calcular_dias_360(ingreso, retiro) + 1
 
     inicio_cesantias = max(ingreso, date(retiro.year, 1, 1))
@@ -46,9 +39,6 @@ def calcular_liquidacion_definitiva(
     
     salario_pendiente_neto = salario_pendiente_bruto - (salud + pension)
 
-    # ==========================================
-    # 3. PRESTACIONES SOCIALES
-    # ==========================================
     if es_salario_integral:
         prima_servicios = 0.0
         cesantias = 0.0
