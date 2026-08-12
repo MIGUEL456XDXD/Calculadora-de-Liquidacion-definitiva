@@ -15,10 +15,8 @@ class TestsLiqDef ( unittest.TestCase):
         es_salario_integral = False
     )
 
-        # 3. VERIFICAR EL RESULTADO (Assert / Print)
         print("--- RESULTADOS CASO NORMAL 1 (YASMIN URREGO) ---")
         
-        # Imprimimos el diccionario resultante línea por línea para que se vea ordenado
         for llave, valor in resultado.items():
             print(f"{llave}: ${valor:,.2f}")
 
@@ -33,10 +31,9 @@ class TestsLiqDef ( unittest.TestCase):
             es_salario_integral = False
         )
     
-            # 3. VERIFICAR EL RESULTADO (Assert / Print)
+    
             print("--- RESULTADOS CASO NORMAL 2 (LAURA ECHEVERRY) ---")
             
-            # Imprimimos el diccionario resultante línea por línea para que se vea ordenado
             for llave, valor in resultado.items():
                 print(f"{llave}: ${valor:,.2f}")
 
@@ -51,10 +48,8 @@ class TestsLiqDef ( unittest.TestCase):
             es_salario_integral = False
         )
         
-            # 3. VERIFICAR EL RESULTADO (Assert / Print)
             print("--- RESULTADOS CASO NORMAL 3 (DIEGO GOMEZ) ---")
                 
-            # Imprimimos el diccionario resultante línea por línea para que se vea ordenado
             for llave, valor in resultado.items():
                 print(f"{llave}: ${valor:,.2f}")
 
@@ -69,10 +64,8 @@ class TestsLiqDef ( unittest.TestCase):
             es_salario_integral = False
         )
             
-            # 3. VERIFICAR EL RESULTADO (Assert / Print)
             print("--- RESULTADOS CASO EXTRAODINARIO 1 (NICOLAS OROZCO) ---")
                     
-            # Imprimimos el diccionario resultante línea por línea para que se vea ordenado
             for llave, valor in resultado.items():
                 print(f"{llave}: ${valor:,.2f}")
 
@@ -87,10 +80,8 @@ class TestsLiqDef ( unittest.TestCase):
             es_salario_integral = False
         )
             
-            # 3. VERIFICAR EL RESULTADO (Assert / Print)
             print("--- RESULTADOS CASO EXTRAODINARIO 2 (BRYAN MOSQUERA) ---")
                     
-            # Imprimimos el diccionario resultante línea por línea para que se vea ordenado
             for llave, valor in resultado.items():
                 print(f"{llave}: ${valor:,.2f}")
 
@@ -105,10 +96,8 @@ class TestsLiqDef ( unittest.TestCase):
             es_salario_integral = True
         )
             
-            # 3. VERIFICAR EL RESULTADO (Assert / Print)
             print("--- RESULTADOS CASO EXTRAODINARIO 3 (VALENTINA HIGUITA) ---")
                     
-            # Imprimimos el diccionario resultante línea por línea para que se vea ordenado
             for llave, valor in resultado.items():
                 print(f"{llave}: ${valor:,.2f}")
 
