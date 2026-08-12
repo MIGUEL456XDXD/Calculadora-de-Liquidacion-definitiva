@@ -2,6 +2,10 @@
 
 Se requiere una aplicación que calcule el valor a pagar a un empleado que finaliza su contrato laboral con una empresa. Este proyecto automatiza el cálculo de la liquidación definitiva bajo la normativa laboral colombiana, garantizando precisión en el manejo de fechas, días comerciales y reglas de deducciones.
 
+##  Integrantes del proyecto
+*Hans Schoonewolff Otero
+*Miguel Obando Serna
+
 ## 📥 Variables de Entrada
 
 Para utilizar el motor de cálculo, la función principal recibe las siguientes variables (con sus nombres exactos en el código):
