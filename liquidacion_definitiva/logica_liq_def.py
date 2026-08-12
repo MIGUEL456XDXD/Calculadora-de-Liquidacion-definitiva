@@ -16,8 +16,8 @@ def calcular_dias_360(fecha_inicio: date, fecha_fin: date) -> int:
 def calcular_liquidacion_definitiva(
     ingreso: date,
     retiro: date,
-    sueldo_mensual: float,  # El salario pactado (Para deducir Salud/Pensión y Vacaciones)
-    salario_total: float,   # Sueldo + Auxilio (Para pagar días pendientes, Prima y Cesantías)
+    sueldo_mensual: float,  
+    salario_total: float,   
     dias_pendientes: int,
     es_salario_integral: bool = False
 ) -> dict:
