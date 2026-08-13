@@ -5,6 +5,7 @@ Se requiere una aplicación que calcule el valor a pagar a un empleado que final
 
 ##  Integrantes del proyecto
 *Hans Schoonewolff Otero*
+
 *Miguel Obando Serna*
 
 ## 📥 Variables de Entrada
