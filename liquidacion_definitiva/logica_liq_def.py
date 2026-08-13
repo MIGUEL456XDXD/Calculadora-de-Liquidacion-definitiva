@@ -44,29 +44,34 @@ def calcular_liquidacion_definitiva(
     
     salario_pendiente_neto = salario_pendiente_bruto - (salud + pension)
 
-    if ingreso > retiro:
-        return {
-            "error": "ERROR 1: La fecha de ingreso no puede ser posterior a la fecha de retiro."
-        }
+    try:
+        if ingreso > retiro:
+            raise ValueError(
+                "ERROR 1: La fecha de ingreso no puede ser posterior a la fecha de retiro."
+            )
 
-    # ERROR 2: salario negativo
-    if sueldo_mensual < 0 or salario_total < 0:
-        return {
-            "error": "ERROR 2: El salario no puede ser negativo."
-        }
+        if sueldo_mensual < 0 or salario_total < 0:
+            raise ValueError(
+                "ERROR 2: El salario no puede ser negativo."
+            )
 
-    # ERROR 3: días pendientes mayores a 30
-    if dias_pendientes < 0 or dias_pendientes > 30:
-        return {
-            "error": "ERROR 3: Los días pendientes no pueden superar los 30 días."
-        }
+        if dias_pendientes < 0 or dias_pendientes > 30:
+            raise ValueError(
+                "ERROR 3: Los días pendientes no pueden superar los 30 días."
+            )
 
-    # ERROR 4: auxilio de transporte cuando no corresponde
-    limite_auxilio = 3501810
+        limite_auxilio = 3501810
 
-    if sueldo_mensual > limite_auxilio and salario_total > sueldo_mensual:
+        if sueldo_mensual > limite_auxilio and salario_total > sueldo_mensual:
+            raise ValueError(
+                "ERROR 4: El trabajador no tiene derecho al auxilio de transporte."
+            )
+
+
+
+    except ValueError as e:
         return {
-            "error": "ERROR 4: El trabajador no tiene derecho al auxilio de transporte."
+            "error": str(e)
         }
 
     if es_salario_integral:
