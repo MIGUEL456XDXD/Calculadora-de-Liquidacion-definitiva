@@ -1,5 +1,9 @@
+import sys
+sys.path.append("src")
+
 from datetime import date
-from logica_liq_def import calcular_liquidacion_definitiva
+from model import logica_liq_def
+from model.logica_liq_def import calcular_liquidacion_definitiva
 
 print("--- CALCULADORA DE LIQUIDACIÓN ---")
 
