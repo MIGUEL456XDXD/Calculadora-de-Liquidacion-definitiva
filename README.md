@@ -8,6 +8,28 @@ Se requiere una aplicación que calcule el valor a pagar a un empleado que final
 
 *Miguel Obando Serna*
 
+## Arquitectura del Proyecto
+
+Este proyecto está construido siguiendo los principios de separación de responsabilidades, basándose en la arquitectura **MVC (Modelo-Vista-Controlador)**. 
+
+La estructura del repositorio divide de forma estricta la lógica matemática de la interfaz de usuario. Esto garantiza que el código sea escalable, fácil de mantener y que se puedan crear nuevas interfaces (como aplicaciones web o gráficas) en el futuro sin necesidad de alterar los cálculos base.
+
+La organización del proyecto es la siguiente:
+
+### 1. `src/model/` (El Modelo)
+* **Archivo principal:** `logica_liq_def.py`
+* **Responsabilidad:** Es el núcleo del sistema. Aquí residen todas las reglas de negocio, las fórmulas correspondientes a la legislación laboral colombiana (cesantías, intereses, vacaciones) y la validación de excepciones.
+* **Restricciones:** Este módulo funciona de manera aislada; no contiene instrucciones de consola (`print` o `input`). Únicamente recibe datos, procesa cálculos y retorna un diccionario de resultados o lanza errores controlados (`raise`).
+
+### 2. `src/view/console/` (La Vista)
+* **Archivo principal:** `consola_usuario.py`
+* **Responsabilidad:** Se encarga de la interacción directa con la persona que utiliza el software. 
+* **Flujo:** Captura los datos a través de la terminal, invoca las funciones del **Modelo** enviando la información, y formatea la respuesta para mostrar los valores monetarios en pantalla de forma amigable. Además, captura los errores generados por el modelo (`try/except`) para mostrar mensajes claros sin que el programa colapse.
+
+### 3. `tests/` (Pruebas Unitarias)
+* **Archivo principal:** `tests_liq_def.py`
+* **Responsabilidad:** Asegurar la calidad y precisión del software. Utiliza la librería `unittest` nativa de Python para evaluar la calculadora de liquidación bajo múltiples escenarios (casos de éxito normales, casos de error por violaciones a las reglas de negocio, y casos extraordinarios), garantizando que las futuras modificaciones en el código no rompan la lógica existente.
+
 ## 📥 Variables de Entrada
 
 Para utilizar el motor de cálculo, la función principal recibe las siguientes variables:

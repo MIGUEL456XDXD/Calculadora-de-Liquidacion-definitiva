@@ -30,6 +30,23 @@ def calcular_dias_360(fecha_inicio: date, fecha_fin: date) -> int:
         
     return (y2 - y1) * 360 + (m2 - m1) * 30 + (d2 - d1)
 
+def verificar_fecha_de_ingreso(ingreso, retiro):
+    if ingreso > retiro:
+        raise FechasInvalidas("CALCULAR LIQUIDACION DEFINITIVA: La fecha de ingreso no puede ser posterior a la fecha de retiro.")
+
+def verificar_salario(sueldo_mensual, salario_total):
+    if sueldo_mensual < 0 or salario_total < 0:
+        raise SalarioNegativo("CALCULAR LIQUIDACION DEFINITIVA: El salario no puede ser negativo.")
+
+def verificar_dias_pendientes(dias_pendientes):
+    if dias_pendientes < 0 or dias_pendientes > 30:
+        raise DiasPendientesInvalidos("CALCULAR LIQUIDACION DEFINITIVA: Los días pendientes no pueden superar los 30 días.")
+
+def verificar_auxilio_de_transporte(sueldo_mensual, salario_total):
+    limite_auxilio = 3501810
+    if sueldo_mensual > limite_auxilio and salario_total > sueldo_mensual:
+        raise AuxilioTransporteInvalido("El trabajador no tiene derecho al auxilio de transporte.")
+
 
 def calcular_liquidacion_definitiva(
     ingreso: date,
@@ -41,18 +58,13 @@ def calcular_liquidacion_definitiva(
 ) -> dict:
 
     # 1. Validaciones
-    if ingreso > retiro:
-        raise FechasInvalidas("La fecha de ingreso no puede ser posterior a la fecha de retiro.")
+    verificar_fecha_de_ingreso(ingreso, retiro)
 
-    if sueldo_mensual < 0 or salario_total < 0:
-        raise SalarioNegativo("El salario no puede ser negativo.")
+    verificar_salario(sueldo_mensual, salario_total)
 
-    if dias_pendientes < 0 or dias_pendientes > 30:
-        raise DiasPendientesInvalidos("Los días pendientes no pueden superar los 30 días.")
+    verificar_dias_pendientes(dias_pendientes)
 
-    limite_auxilio = 3501810
-    if sueldo_mensual > limite_auxilio and salario_total > sueldo_mensual:
-        raise AuxilioTransporteInvalido("El trabajador no tiene derecho al auxilio de transporte.")
+    verificar_auxilio_de_transporte(sueldo_mensual, salario_total)
 
     # 2. Logica de la liquidacion definitva
     dias_totales = calcular_dias_360(ingreso, retiro) + 1
@@ -90,6 +102,13 @@ def calcular_liquidacion_definitiva(
         
         "liquidacion_total": round(liquidacion_total, 2)
     }
+
+
+
+
+
+
+
 
 """ 
         "dias_cesantias": dias_cesantias,
