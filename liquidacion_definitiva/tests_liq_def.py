@@ -1,7 +1,6 @@
 import unittest
 from datetime import date
 from logica_liq_def import calcular_liquidacion_definitiva
-#Pruebas Unitarias ---
 
 class TestsLiqDef ( unittest.TestCase):
 
@@ -112,8 +111,9 @@ class TestsLiqDef ( unittest.TestCase):
             for llave, valor in resultado.items():
                 print(f"{llave}: ${valor:,.2f}")
 
-    def test_error_1(self):
 
+
+    def test_error_1(self):
         resultado = calcular_liquidacion_definitiva(
             date(2026, 9, 15),
             date(2026, 2, 28),
@@ -122,13 +122,11 @@ class TestsLiqDef ( unittest.TestCase):
             0
         )
 
-        print("--- ERROR 1 (PATRICK OTERO) ---")
+        assert "error" in resultado
+        assert "ERROR 1" in resultado["error"]
 
-        for llave, valor in resultado.items():
-            print(f"{llave}: {valor}")
 
     def test_error_2(self):
-
         resultado = calcular_liquidacion_definitiva(
             date(2026, 2, 1),
             date(2026, 9, 25),
@@ -137,13 +135,11 @@ class TestsLiqDef ( unittest.TestCase):
             25
         )
 
-        print("--- ERROR 2 (SANTIAGO CHAVEZ) ---")
+        assert "error" in resultado
+        assert "ERROR 2" in resultado["error"]
 
-        for llave, valor in resultado.items():
-            print(f"{llave}: {valor}")
 
     def test_error_3(self):
-
         resultado = calcular_liquidacion_definitiva(
             date(2026, 1, 15),
             date(2026, 10, 31),
@@ -152,13 +148,11 @@ class TestsLiqDef ( unittest.TestCase):
             35
         )
 
-        print("--- ERROR 3 (LORENA MONSALVE) ---")
+        assert "error" in resultado
+        assert "ERROR 3" in resultado["error"]
 
-        for llave, valor in resultado.items():
-            print(f"{llave}: {valor}")
 
     def test_error_4(self):
-
         resultado = calcular_liquidacion_definitiva(
             date(2025, 1, 10),
             date(2026, 12, 12),
@@ -167,10 +161,8 @@ class TestsLiqDef ( unittest.TestCase):
             12
         )
 
-        print("--- ERROR 4 (SARA BARRAGAN) ---")
-
-        for llave, valor in resultado.items():
-            print(f"{llave}: {valor}")
+        assert "error" in resultado
+        assert "ERROR 4" in resultado["error"]
 
 
 if __name__ == '__main__':
