@@ -2,30 +2,30 @@ import sys
 sys.path.append("src")
 
 from datetime import date
-from model import logica_liq_def
-from model.logica_liq_def import calcular_liquidacion_definitiva
+from model import logica_liquidacion_definitiva
+from model.logica_liquidacion_definitiva import calcular_liquidacion_definitiva
 
 print("--- CALCULADORA DE LIQUIDACIÓN ---")
 
 # 1. Pedir fecha de ingreso por partes
 print("Ingresa la fecha de INGRESO:")
-dia_ing = int(input("Día: "))
-mes_ing = int(input("Mes: "))
-ano_ing = int(input("Año: "))
-fecha_ingreso = date(ano_ing, mes_ing, dia_ing)
+dia_ingreso = int(input("Día: "))
+mes_ingreso = int(input("Mes: "))
+ano_ingreso = int(input("Año: "))
+fecha_ingreso = date(ano_ingreso, mes_ingreso, dia_ingreso)
 
 # 2. Pedir fecha de retiro por partes
 print("\nIngresa la fecha de RETIRO:")
-dia_ret = int(input("Día: "))
-mes_ret = int(input("Mes: "))
-ano_ret = int(input("Año: "))
-fecha_retiro = date(ano_ret, mes_ret, dia_ret)
+dia_retiro = int(input("Día: "))
+mes_retiro = int(input("Mes: "))
+ano_retiro = int(input("Año: "))
+fecha_retiro = date(ano_retiro, mes_retiro, dia_retiro)
 
 # 3. Pedir datos de dinero y tiempo
 print("\nIngresa los datos del salario:")
 sueldo_mensual = float(input("Sueldo mensual pactado (ej. 1750905): "))
-aux_transporte = float(input("Auxilio de transporte (0 si no aplica): "))
-salario_total = sueldo_mensual + aux_transporte
+auxilio_transporte = float(input("Auxilio de transporte (0 si no aplica): "))
+salario_total = sueldo_mensual + auxilio_transporte
 
 dias_pendientes = int(input("Días pendientes de pago del último mes: "))
 

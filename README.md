@@ -30,6 +30,20 @@ La organización del proyecto es la siguiente:
 * **Archivo principal:** `tests_liq_def.py`
 * **Responsabilidad:** Asegurar la calidad y precisión del software. Utiliza la librería `unittest` nativa de Python para evaluar la calculadora de liquidación bajo múltiples escenarios (casos de éxito normales, casos de error por violaciones a las reglas de negocio, y casos extraordinarios), garantizando que las futuras modificaciones en el código no rompan la lógica existente.
 
+### Comando para ejecutar las pruebas unitarias
+
+Para verificar que todos los cálculos matemáticos de la liquidación y las reglas de negocio funcionan correctamente, abre la terminal en la carpeta raíz del proyecto y ejecuta el siguiente comando:
+
+```bash
+python -m unittest tests/tests_liq_def.py
+
+### Comando para ejecutar la aplicación (Interfaz de Consola)
+
+Para iniciar la calculadora de liquidación y comenzar a interactuar con el programa, abre la terminal asegurándote de estar en la carpeta raíz del proyecto y ejecuta el siguiente comando:
+
+```bash
+python src/view/consola_usuario.py
+
 ## 📥 Variables de Entrada
 
 Para utilizar el motor de cálculo, la función principal recibe las siguientes variables:
