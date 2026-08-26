@@ -1,12 +1,12 @@
 import unittest
 from datetime import date
-from logica_liq_def import calcular_liquidacion_definitiva
+import logica_liq_def 
 
 class TestsLiqDef ( unittest.TestCase):
 
     def test_normal_1(self):
 
-        resultado = calcular_liquidacion_definitiva(
+        resultado = logica_liq_def.calcular_liquidacion_definitiva(
         ingreso = date(2026, 1, 1),           # Año, Mes, Día
         retiro = date(2026, 12, 15),          # Año, Mes, Día
         sueldo_mensual = 1750905.0,           # Sin puntos ni comas
@@ -24,7 +24,7 @@ class TestsLiqDef ( unittest.TestCase):
 
     def test_normal_2(self):
     
-            resultado = calcular_liquidacion_definitiva(
+            resultado = logica_liq_def.calcular_liquidacion_definitiva(
             ingreso = date(2025, 3, 10),           # Año, Mes, Día
             retiro = date(2026, 8, 20),          # Año, Mes, Día
             sueldo_mensual = 1750905.0,           # Sin puntos ni comas
@@ -41,7 +41,7 @@ class TestsLiqDef ( unittest.TestCase):
 
     def test_normal_3(self):
         
-            resultado = calcular_liquidacion_definitiva(
+            resultado = logica_liq_def.calcular_liquidacion_definitiva(
             ingreso = date(2026, 1, 1),           # Año, Mes, Día
             retiro = date(2026, 6, 30),          # Año, Mes, Día
             sueldo_mensual = 3950000.0,           # Sin puntos ni comas
@@ -59,7 +59,7 @@ class TestsLiqDef ( unittest.TestCase):
 
     def test_extraordinario_1(self):
             
-            resultado = calcular_liquidacion_definitiva(
+            resultado = logica_liq_def.calcular_liquidacion_definitiva(
             ingreso = date(2024, 5, 1),           # Año, Mes, Día
             retiro = date(2026, 10, 31),          # Año, Mes, Día
             sueldo_mensual = 1900000.0,           # Sin puntos ni comas
@@ -77,7 +77,7 @@ class TestsLiqDef ( unittest.TestCase):
 
     def test_extraordinario_2(self):
             
-            resultado = calcular_liquidacion_definitiva(
+            resultado = logica_liq_def.calcular_liquidacion_definitiva(
             ingreso = date(2026, 2, 1),           # Año, Mes, Día
             retiro = date(2026, 2, 28),          # Año, Mes, Día
             sueldo_mensual = 2000000.0,           # Sin puntos ni comas
@@ -95,7 +95,7 @@ class TestsLiqDef ( unittest.TestCase):
 
     def test_extraordinario_3(self):
             
-            resultado = calcular_liquidacion_definitiva(
+            resultado = logica_liq_def.calcular_liquidacion_definitiva(
             ingreso = date(2025, 1, 1),           # Año, Mes, Día
             retiro = date(2026, 7, 30),          # Año, Mes, Día
             sueldo_mensual = 20000000.0,           # Sin puntos ni comas
@@ -113,60 +113,47 @@ class TestsLiqDef ( unittest.TestCase):
 
 
 
-    def test_error_1(self):
-        resultado = calcular_liquidacion_definitiva(
-            date(2026, 9, 15),
-            date(2026, 2, 28),
-            0,
-            0,
-            0
-        )
+    def test_error_1_fechas(self):
+        # Verifica que se genere la excepción FechasInvalidas adentro del bloque with
+        with self.assertRaises(logica_liq_def.FechasInvalidas):
+            logica_liq_def.calcular_liquidacion_definitiva(
+                ingreso=date(2026, 9, 15),
+                retiro=date(2026, 2, 28),
+                sueldo_mensual=0,
+                salario_total=0,
+                dias_pendientes=0
+            )
 
-        assert "error" in resultado
-        assert "ERROR 1" in resultado["error"]
+    def test_error_2_salario(self):
+        with self.assertRaises(logica_liq_def.SalarioNegativo):
+            logica_liq_def.calcular_liquidacion_definitiva(
+                ingreso=date(2026, 2, 1),
+                retiro=date(2026, 9, 25),
+                sueldo_mensual=-2150000,
+                salario_total=-2150000,
+                dias_pendientes=25
+            )
 
+    def test_error_3_dias(self):
+        with self.assertRaises(logica_liq_def.DiasPendientesInvalidos):
+            logica_liq_def.calcular_liquidacion_definitiva(
+                ingreso=date(2026, 1, 15),
+                retiro=date(2026, 10, 31),
+                sueldo_mensual=0,
+                salario_total=0,
+                dias_pendientes=35
+            )
 
-    def test_error_2(self):
-        resultado = calcular_liquidacion_definitiva(
-            date(2026, 2, 1),
-            date(2026, 9, 25),
-            -2150000,
-            -2150000,
-            25
-        )
-
-        assert "error" in resultado
-        assert "ERROR 2" in resultado["error"]
-
-
-    def test_error_3(self):
-        resultado = calcular_liquidacion_definitiva(
-            date(2026, 1, 15),
-            date(2026, 10, 31),
-            0,
-            0,
-            35
-        )
-
-        assert "error" in resultado
-        assert "ERROR 3" in resultado["error"]
-
-
-    def test_error_4(self):
-        resultado = calcular_liquidacion_definitiva(
-            date(2025, 1, 10),
-            date(2026, 12, 12),
-            18000000,
-            18249095,
-            12
-        )
-
-        assert "error" in resultado
-        assert "ERROR 4" in resultado["error"]
-
+    def test_error_4_auxilio(self):
+        with self.assertRaises(logica_liq_def.AuxilioTransporteInvalido):
+            logica_liq_def.calcular_liquidacion_definitiva(
+                ingreso=date(2025, 1, 10),
+                retiro=date(2026, 12, 12),
+                sueldo_mensual=18000000,
+                salario_total=18249095,
+                dias_pendientes=12
+            )
 
 if __name__ == '__main__':
     unittest.main()
 
-
-        
