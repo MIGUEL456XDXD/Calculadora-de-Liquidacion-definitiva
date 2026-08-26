@@ -1,6 +1,10 @@
+import sys
+sys.path.append("src")
+
 import unittest
+
 from datetime import date
-import logica_liq_def 
+from model import logica_liq_def 
 
 class TestsLiqDef ( unittest.TestCase):
 
