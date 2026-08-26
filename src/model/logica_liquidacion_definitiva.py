@@ -20,15 +20,15 @@ class AuxilioTransporteInvalido(Exception):
 
 def calcular_dias_360(fecha_inicio: date, fecha_fin: date) -> int:
     """ Helper: Calcula la diferencia de días usando el Año Comercial. """
-    d1, m1, y1 = fecha_inicio.day, fecha_inicio.month, fecha_inicio.year
-    d2, m2, y2 = fecha_fin.day, fecha_fin.month, fecha_fin.year
+    dia1, mes1, ano1 = fecha_inicio.day, fecha_inicio.month, fecha_inicio.year
+    dia2, mes2, ano2 = fecha_fin.day, fecha_fin.month, fecha_fin.year
     
-    if d1 == 31: d1 = 30
-    if d2 == 31: d2 = 30
-    if d1 == 28: d1 = 30
-    if d2 == 28: d2 = 30
+    if dia1 == 31: dia1 = 30
+    if dia2 == 31: dia2 = 30
+    if dia1 == 28: dia1 = 30
+    if dia2 == 28: dia2 = 30
         
-    return (y2 - y1) * 360 + (m2 - m1) * 30 + (d2 - d1)
+    return (ano2 - ano1) * 360 + (mes2 - mes1) * 30 + (dia2 - dia1)
 
 def verificar_fecha_de_ingreso(ingreso, retiro):
     if ingreso > retiro:
