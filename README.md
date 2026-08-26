@@ -1,5 +1,5 @@
 
-# Calculadora-de-Liquidacion-definitiva
+# Calculadora de liquidacion definitiva
 
 Se requiere una aplicación que calcule el valor a pagar a un empleado que finaliza su contrato laboral con una empresa. Este proyecto automatiza el cálculo de la liquidación definitiva bajo la normativa laboral colombiana, garantizando precisión en el manejo de fechas, días comerciales y reglas de deducciones.
 
