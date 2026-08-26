@@ -3,14 +3,14 @@ from logica_liq_def import calcular_liquidacion_definitiva
 
 print("--- CALCULADORA DE LIQUIDACIÓN ---")
 
-# 1. Pedir fecha de ingreso por partes
+# 1. Pedir fecha de ingreso
 print("Ingresa la fecha de INGRESO:")
 dia_ing = int(input("Día: "))
 mes_ing = int(input("Mes: "))
 ano_ing = int(input("Año: "))
 fecha_ingreso = date(ano_ing, mes_ing, dia_ing)
 
-# 2. Pedir fecha de retiro por partes
+# 2. Pedir fecha de retiro
 print("\nIngresa la fecha de RETIRO:")
 dia_ret = int(input("Día: "))
 mes_ret = int(input("Mes: "))
@@ -45,10 +45,9 @@ resultado = calcular_liquidacion_definitiva(
 # 6. Mostrar los resultados
 print("\n=== RESULTADOS DE LA LIQUIDACIÓN ===")
 
-# Revisamos si la función devolvió algún error
+# Revisiones de error
 if "error" in resultado:
     print(resultado["error"])
 else:
-    # Si todo salió bien, imprimimos los datos uno por uno
     for llave, valor in resultado.items():
         print(f"{llave}: {valor}")
