@@ -1,20 +1,33 @@
 from datetime import date
 
 
-# clases de exepciones
+# =========================
+# CLASES DE EXCEPCIONES
+# =========================
 
 class FechasInvalidas(Exception):
-    """ Se dispara cuando la fecha de ingreso es posterior al retiro """
+    """Se dispara cuando la fecha de ingreso es posterior al retiro."""
+
+    def __init__(self, mensaje):
+        super().__init__(mensaje)
+
 
 class SalarioNegativo(Exception):
-    """ Se dispara cuando el sueldo o salario total es menor a cero """
+    """Se dispara cuando el sueldo o salario total es menor a cero."""
+
+
+
 
 class DiasPendientesInvalidos(Exception):
-    """ Se dispara cuando los días pendientes son menores a 0 o mayores a 30 """
+    """Se dispara cuando los días pendientes son menores a 0 o mayores a 30."""
+
+
 
 class AuxilioTransporteInvalido(Exception):
-    """ Se dispara cuando el sueldo supera el tope pero se cobra auxilio """
+    """Se dispara cuando el sueldo supera el tope pero se cobra auxilio."""
 
+    def __init__(self, mensaje):
+        super().__init__(mensaje)
 
 # Calculo matematico
 
