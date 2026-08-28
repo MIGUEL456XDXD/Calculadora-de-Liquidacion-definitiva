@@ -13,14 +13,17 @@ class FechasInvalidas(Exception):
 
 
 class SalarioNegativo(Exception):
-    """Se dispara cuando el sueldo o salario total es menor a cero."""
+    """Se dispara cuando el sueldo o salario total es menor a cero.,"""
 
-
+    def __init__(self, mensaje):
+        super().__init__(mensaje)
 
 
 class DiasPendientesInvalidos(Exception):
     """Se dispara cuando los días pendientes son menores a 0 o mayores a 30."""
 
+    def __init__(self, mensaje):
+        super().__init__(mensaje)
 
 
 class AuxilioTransporteInvalido(Exception):
@@ -28,6 +31,7 @@ class AuxilioTransporteInvalido(Exception):
 
     def __init__(self, mensaje):
         super().__init__(mensaje)
+
 
 # Calculo matematico
 
