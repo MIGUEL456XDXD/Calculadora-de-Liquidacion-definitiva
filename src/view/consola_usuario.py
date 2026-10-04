@@ -2,8 +2,7 @@ import sys
 sys.path.append("src")
 
 from datetime import date
-from model import logica_liquidacion_definitiva
-from model.logica_liquidacion_definitiva import calcular_liquidacion_definitiva
+from model.logica_liquidacion_definitiva import CalculadoraLiquidacionDefinitiva
 
 print("--- CALCULADORA DE LIQUIDACIÓN ---")
 
@@ -37,11 +36,12 @@ else:
     es_salario_integral = False
 
 # 5. Llamar a la función principal
-resultado = calcular_liquidacion_definitiva(
+calculadora = CalculadoraLiquidacionDefinitiva()
+resultado = calculadora.calcular(
     ingreso=fecha_ingreso,
     retiro=fecha_retiro,
     sueldo_mensual=sueldo_mensual,
-    salario_total=salario_total,
+    sueldo_total=salario_total,
     dias_pendientes=dias_pendientes,
     es_salario_integral=es_salario_integral
 )

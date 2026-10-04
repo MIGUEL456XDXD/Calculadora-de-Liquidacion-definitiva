@@ -49,15 +49,15 @@ def calcular_dias_360(fecha_inicio: date, fecha_fin: date) -> int:
 
 def verificar_fecha_de_ingreso(ingreso, retiro):
     if ingreso > retiro:
-        raise FechasInvalidas("CALCULAR LIQUIDACION DEFINITIVA: La fecha de ingreso no puede ser posterior a la fecha de retiro.")
+        raise FechasInvalidas(" La fecha de ingreso no puede ser posterior a la fecha de retiro.")
 
 def verificar_salario(sueldo_mensual, salario_total):
     if sueldo_mensual < 0 or salario_total < 0:
-        raise SalarioNegativo("CALCULAR LIQUIDACION DEFINITIVA: El salario no puede ser negativo.")
+        raise SalarioNegativo(" El salario no puede ser negativo.")
 
 def verificar_dias_pendientes(dias_pendientes):
     if dias_pendientes < 0 or dias_pendientes > 30:
-        raise DiasPendientesInvalidos("CALCULAR LIQUIDACION DEFINITIVA: Los días pendientes no pueden superar los 30 días.")
+        raise DiasPendientesInvalidos(" Los días pendientes no pueden superar los 30 días.")
 
 def verificar_auxilio_de_transporte(sueldo_mensual, salario_total):
     limite_auxilio = 3501810
@@ -65,62 +65,53 @@ def verificar_auxilio_de_transporte(sueldo_mensual, salario_total):
         raise AuxilioTransporteInvalido("El trabajador no tiene derecho al auxilio de transporte.")
 
 
-def calcular_liquidacion_definitiva(
-    ingreso: date,
-    retiro: date,
-    sueldo_mensual: float,  
-    salario_total: float,   
-    dias_pendientes: int,
-    es_salario_integral: bool = False
-) -> dict:
+class CalculadoraLiquidacionDefinitiva:
+    def calcular(
+            self,
+            ingreso: date,
+            retiro: date,
+            sueldo_mensual: float,
+            sueldo_total: float,
+            dias_pendientes: int,
+            es_salario_integral: bool = False
 
-    # 1. Validaciones
-    verificar_fecha_de_ingreso(ingreso, retiro)
+    ):
+        verificar_fecha_de_ingreso(ingreso, retiro)
+        verificar_salario(sueldo_mensual, sueldo_total)
+        verificar_dias_pendientes(dias_pendientes)
+        verificar_auxilio_de_transporte(sueldo_mensual, sueldo_total)
 
-    verificar_salario(sueldo_mensual, salario_total)
+        dias_totales = calcular_dias_360(ingreso, retiro) + 1
+        inicio_cesantias = max(ingreso, date(retiro.year, 1, 1))
+        dias_cesantias = calcular_dias_360(inicio_cesantias, retiro) + 1
+        mes_corte_prima = 1 if retiro.month <= 6 else 7
+        inicio_prima = max(ingreso, date(retiro.year, mes_corte_prima, 1))
+        dias_prima = calcular_dias_360(inicio_prima, retiro) + 1
+        salario_pendiente_bruto = (sueldo_total / 30) * dias_pendientes
+        base_deducciones = (sueldo_total / 30) * dias_pendientes
+        salud = base_deducciones * 0.04
+        pension = base_deducciones * 0.04
+        salario_pendiente_neto = salario_pendiente_bruto - (salud + pension)
 
-    verificar_dias_pendientes(dias_pendientes)
+        if es_salario_integral:
+            prima_servicios = 0.0
+            cesantias = 0.0
+            intereses_cesantias = 0.0
+        else:
+            prima_servicios = (sueldo_total * dias_prima) / 360
+            cesantias = (sueldo_total * dias_cesantias) / 360
+            intereses_cesantias = (cesantias * dias_cesantias * 0.12) / 360
 
-    verificar_auxilio_de_transporte(sueldo_mensual, salario_total)
+        vacaciones = (sueldo_mensual * dias_totales) / 720
+        liquidacion_total = (salario_pendiente_neto + prima_servicios + cesantias + intereses_cesantias + vacaciones)
 
-    # 2. Logica de la liquidacion definitva
-    dias_totales = calcular_dias_360(ingreso, retiro) + 1
+        return {
+            "Liquidación total": round(liquidacion_total, 2)
+            }
 
-    inicio_cesantias = max(ingreso, date(retiro.year, 1, 1))
-    dias_cesantias = calcular_dias_360(inicio_cesantias, retiro) + 1
 
-    mes_corte_prima = 1 if retiro.month <= 6 else 7
-    inicio_prima = max(ingreso, date(retiro.year, mes_corte_prima, 1))
-    dias_prima = calcular_dias_360(inicio_prima, retiro) + 1
-
-    salario_pendiente_bruto = (salario_total / 30) * dias_pendientes
+            
     
-    base_deducciones = (salario_total / 30) * dias_pendientes 
-    salud = base_deducciones * 0.04
-    pension = base_deducciones * 0.04
-    
-    salario_pendiente_neto = salario_pendiente_bruto - (salud + pension)
-
-    if es_salario_integral:
-        prima_servicios = 0.0
-        cesantias = 0.0
-        intereses_cesantias = 0.0
-    else:
-        prima_servicios = (salario_total * dias_prima) / 360
-        cesantias = (salario_total * dias_cesantias) / 360
-        intereses_cesantias = (cesantias * dias_cesantias * 0.12) / 360
-
-    vacaciones = (sueldo_mensual * dias_totales) / 720
-
-    liquidacion_total = salario_pendiente_neto + prima_servicios + cesantias + intereses_cesantias + vacaciones
-
-    # 3. RETORNO DE RESULTADOS 
-    return {
-        
-        "liquidacion_total": round(liquidacion_total, 2)
-    }
-
-
 
 
 

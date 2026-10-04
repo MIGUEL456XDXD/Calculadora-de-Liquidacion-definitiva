@@ -81,3 +81,57 @@ El motor matemático central realiza el cálculo en los siguientes pasos lógico
     *   **Intereses sobre Cesantías:** Equivalen al 12% anual sobre el saldo de las cesantías.
 4.  **Vacaciones:** Al no ser una prestación social sino un descanso remunerado, se calculan utilizando el total histórico de días trabajados en toda la vigencia del contrato, pero multiplicados estrictamente por el `sueldo_mensual` pactado.
 5.  **Validación de Salario Integral:** Si el trabajador goza de salario integral, el motor internamente ajusta a $0 la prima, las cesantías y sus intereses, liquidando únicamente las vacaciones acumuladas y el salario del último mes.
+
+# 🖥️ Ejecución de la interfaz gráfica
+
+"Cesar Ramirez Garcia"
+
+"Juan Jose Garcia Agudelo"
+
+Instalar Kivy:
+pip install kivy
+
+## 🚀 Cómo abrir la interfaz gráfica
+
+Para ejecutar la aplicación, abrir una terminal en la carpeta raíz del proyecto y ejecutar el siguiente comando:
+
+python Liquidadora_definitiva.py
+
+Este archivo es el punto de entrada de la aplicación. Importa la clase LiquidadorDefinitivoApp desde el módulo view.gui.Liquidador_definitivo, ubicado dentro de la carpeta src, y ejecuta la interfaz mediante el método run() de Kivy.
+
+## 🧪 Ejecución de pruebas unitarias
+
+El proyecto utiliza la biblioteca unittest de Python para comprobar el funcionamiento de la lógica de liquidación definitiva.
+
+Para ejecutar las pruebas, utilizar el siguiente comando desde la raíz del proyecto:
+
+python -m unittest discover -s tests -p "tests_liq_def.py" -v
+
+Las pruebas contemplan:
+
+Casos normales de liquidación.
+Casos extraordinarios, incluyendo salario integral.
+Validación de fechas de ingreso y retiro.
+Validación de salarios negativos.
+Validación de días pendientes.
+Validación del auxilio de transporte.
+
+## 📦 Generación del ejecutable
+
+El proyecto incluye el archivo Liquidadora_definitiva.spec, utilizado para configurar la generación de un ejecutable mediante PyInstaller.
+
+Instalar PyInstaller:
+
+pip install pyinstaller
+
+Generar el ejecutable:
+
+pyinstaller Liquidadora_definitiva.spec
+
+Si la compilación finaliza correctamente, el ejecutable se encontrará en la carpeta dist.
+
+## 📱 Aplicación para Android
+
+El proyecto puede distribuirse como una aplicación Android mediante un archivo APK, si se genera y se incluye en la distribución del proyecto.
+
+Para instalar el APK en un dispositivo Android, transferir el archivo al dispositivo, autorizar la instalación si es necesario y abrir la aplicación.
