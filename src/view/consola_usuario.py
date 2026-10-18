@@ -1,58 +1,157 @@
+
+"""Interfaz de consola para la calculadora de liquidación definitiva."""
+
 import sys
-sys.path.append("src")
-
+from pathlib import Path
 from datetime import date
-from model import logica_liquidacion_definitiva
-from model.logica_liquidacion_definitiva import calcular_liquidacion_definitiva
+from decimal import Decimal, InvalidOperation
 
-print("--- CALCULADORA DE LIQUIDACIÓN ---")
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-# 1. Pedir fecha de ingreso por partes
-print("Ingresa la fecha de INGRESO:")
-dia_ingreso = int(input("Día: "))
-mes_ingreso = int(input("Mes: "))
-ano_ingreso = int(input("Año: "))
-fecha_ingreso = date(ano_ingreso, mes_ingreso, dia_ingreso)
+from src.model import logica_liquidacion_definitiva as logica
+from src.controller import liquidacion_controller as controlador
 
-# 2. Pedir fecha de retiro por partes
-print("\nIngresa la fecha de RETIRO:")
-dia_retiro = int(input("Día: "))
-mes_retiro = int(input("Mes: "))
-ano_retiro = int(input("Año: "))
-fecha_retiro = date(ano_retiro, mes_retiro, dia_retiro)
 
-# 3. Pedir datos de dinero y tiempo
-print("\nIngresa los datos del salario:")
-sueldo_mensual = float(input("Sueldo mensual pactado (ej. 1750905): "))
-auxilio_transporte = float(input("Auxilio de transporte (0 si no aplica): "))
-salario_total = sueldo_mensual + auxilio_transporte
+def solicitar_fecha(mensaje: str) -> date:
+    while True:
+        print(mensaje)
+        try:
+            dia = int(input("Día: "))
+            mes = int(input("Mes: "))
+            ano = int(input("Año: "))
+            return date(ano, mes, dia)
+        except ValueError:
+            print("Fecha inválida. Intenta de nuevo.")
 
-dias_pendientes = int(input("Días pendientes de pago del último mes: "))
 
-# 4. Preguntar si es salario integral
-respuesta = input("¿El empleado tiene salario integral? (si/no): ")
-if respuesta.lower() == "si":
-    es_salario_integral = True
-else:
-    es_salario_integral = False
+def solicitar_float(mensaje: str) -> float:
+    while True:
+        try:
+            valor = float(input(mensaje))
+            if valor < 0:
+                print("El valor no puede ser negativo.")
+                continue
+            return valor
+        except ValueError:
+            print("Ingresa un número válido.")
 
-# 5. Llamar a la función principal
-resultado = calcular_liquidacion_definitiva(
-    ingreso=fecha_ingreso,
-    retiro=fecha_retiro,
-    sueldo_mensual=sueldo_mensual,
-    salario_total=salario_total,
-    dias_pendientes=dias_pendientes,
-    es_salario_integral=es_salario_integral
-)
 
-# 6. Mostrar los resultados
-print("\n=== RESULTADOS DE LA LIQUIDACIÓN ===")
+def calcular_liquidacion() -> None:
+    print("\n--- CALCULAR LIQUIDACIÓN ---")
+    try:
+        ingreso = solicitar_fecha("Fecha de ingreso:")
+        retiro = solicitar_fecha("Fecha de retiro:")
 
-# Revisamos si la función devolvió algún error
-if "error" in resultado:
-    print(resultado["error"])
-else:
-    # Si todo salió bien, imprimimos los datos uno por uno
-    for llave, valor in resultado.items():
-        print(f"{llave}: {valor}")
+        sueldo = solicitar_float("Sueldo mensual: ")
+        auxilio = solicitar_float("Auxilio de transporte (0 si no aplica): ")
+        dias = int(input("Días pendientes de pago del último mes: "))
+
+        respuesta = input("¿Tiene salario integral? (si/no): ").strip().lower()
+        while respuesta not in ("si", "sí", "no"):
+            respuesta = input("Responde si o no: ").strip().lower()
+
+        datos = logica.DatosLiquidacion(
+            ingreso=ingreso,
+            retiro=retiro,
+            sueldo_mensual=sueldo,
+            salario_total=sueldo + auxilio,
+            dias_pendientes=dias,
+            es_salario_integral=respuesta in ("si", "sí"),
+        )
+
+        resultado = logica.calcular_liquidacion_definitiva(datos)
+        print("\n=== RESULTADOS ===")
+        for llave, valor in resultado.items():
+            print(f"{llave}: {valor}")
+
+    except (
+        ValueError,
+        logica.FechasInvalidas,
+        logica.SalarioNegativo,
+        logica.DiasPendientesInvalidos,
+        logica.AuxilioTransporteInvalido,
+    ) as error:
+        print(f"Error: {error}")
+
+
+def guardar_liquidacion() -> None:
+    print("\n--- GUARDAR LIQUIDACIÓN ---")
+    try:
+        ingreso = solicitar_fecha("Fecha de ingreso:")
+        retiro = solicitar_fecha("Fecha de retiro:")
+
+        while True:
+            try:
+                salario = Decimal(input("Salario mensual: "))
+                break
+            except InvalidOperation:
+                print("Ingresa un salario válido.")
+
+        dias = int(input("Días trabajados: "))
+        respuesta = input("¿Tiene salario integral? (si/no): ").strip().lower()
+        while respuesta not in ("si", "sí", "no"):
+            respuesta = input("Responde si o no: ").strip().lower()
+
+        identificador = controlador.insertar_liquidacion(
+            fecha_ingreso=ingreso,
+            fecha_retiro=retiro,
+            salario=salario,
+            dias_trabajados=dias,
+            salario_integral=respuesta in ("si", "sí"),
+        )
+        print(f"Liquidación guardada. ID: {identificador}")
+
+    except (ValueError, InvalidOperation) as error:
+        print(f"Datos inválidos: {error}")
+    except Exception as error:
+        print(f"No se pudo guardar la liquidación: {error}")
+
+
+def buscar_liquidacion() -> None:
+    print("\n--- BUSCAR LIQUIDACIÓN ---")
+    try:
+        identificador = int(input("ID de la liquidación: "))
+        liquidacion = controlador.buscar_liquidacion(identificador)
+
+        if liquidacion is None:
+            print("No se encontró una liquidación con ese ID.")
+            return
+
+        print(f"ID: {liquidacion.id}")
+        print(f"Fecha de ingreso: {liquidacion.fecha_ingreso}")
+        print(f"Fecha de retiro: {liquidacion.fecha_retiro}")
+        print(f"Salario: {liquidacion.salario}")
+        print(f"Días trabajados: {liquidacion.dias_trabajados}")
+        print(f"Salario integral: {liquidacion.salario_integral}")
+
+    except ValueError:
+        print("El ID debe ser un número entero.")
+    except Exception as error:
+        print(f"No se pudo consultar la base de datos: {error}")
+
+
+def ejecutar_calculadora() -> None:
+    while True:
+        print("\n=== CALCULADORA DE LIQUIDACIÓN ===")
+        print("1. Calcular liquidación")
+        print("2. Guardar liquidación")
+        print("3. Buscar liquidación por ID")
+        print("4. Salir")
+
+        opcion = input("Elige una opción: ").strip()
+
+        if opcion == "1":
+            calcular_liquidacion()
+        elif opcion == "2":
+            guardar_liquidacion()
+        elif opcion == "3":
+            buscar_liquidacion()
+        elif opcion == "4":
+            print("Hasta luego.")
+            break
+        else:
+            print("Opción inválida.")
+
+
+if __name__ == "__main__":
+    ejecutar_calculadora()

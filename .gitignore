@@ -1,3 +1,4 @@
+
 # Archivos generados por Python
 __pycache__/
 *.py[cod]
@@ -5,6 +6,22 @@ __pycache__/
 # Entornos virtuales
 .venv/
 venv/
+env/
 
-# Configuración local
+# Configuración local y credenciales
 .env
+.env.*
+!.env.example
+secret_config.py
+
+# Caché y resultados de pruebas
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Configuración personal de VS Code
+.vscode/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
