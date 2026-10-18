@@ -19,9 +19,10 @@ from src.controller.liquidacion_controller import (
 
 @pytest.fixture
 def base_datos():
-    """Prepara las tablas para ejecutar las pruebas."""
+    """Prepara las tablas antes de cada prueba y las limpia al terminar."""
     crear_tablas()
     yield
+    borrar_tablas()
 
 
 def test_insertar_liquidacion_correcta(base_datos):
@@ -124,11 +125,17 @@ def test_eliminar_liquidacion_inexistente(base_datos):
 
 def test_crear_tablas(base_datos):
     """Comprueba que exista la tabla de liquidaciones."""
-    assert inspect(engine).has_table("liquidaciones")
+    assert inspect(engine).has_table(
+        "liquidaciones",
+        schema="public",
+    )
 
 
 def test_borrar_tablas(base_datos):
     """Comprueba que se puedan borrar las tablas."""
     borrar_tablas()
 
-    assert not inspect(engine).has_table("liquidaciones")
+    assert not inspect(engine).has_table(
+        "liquidaciones",
+        schema="public",
+    )

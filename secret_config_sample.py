@@ -1,12 +1,14 @@
 
 """
-Configuración de ejemplo para conectar el proyecto con PostgreSQL.
+Configuración de ejemplo para conectar el proyecto
+de liquidación definitiva con PostgreSQL.
 
-Para ejecutar el programa, hay que configurar la variable DATABASE_URL
-en PowerShell con los datos de la base de datos.
+Antes de ejecutar el programa, hay que configurar
+la variable DATABASE_URL desde PowerShell.
 
-Cambia el usuario y la contraseña de ejemplo por los tuyos.
-No compartas tus datos de conexión reales.
+Los datos que aparecen abajo son de ejemplo.
+Cambia el usuario y la contraseña según tu configuración.
+No compartas tus datos reales de conexión.
 """
 
 import os
