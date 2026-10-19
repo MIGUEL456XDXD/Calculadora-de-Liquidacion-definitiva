@@ -1,10 +1,9 @@
 """Inicializa las tablas de la base de datos."""
 
-from src.database.conexion import crear_tablas
-from src.model.modelo_liquidacion import ModeloLiquidacion
+from src.controller.liquidacion_controller import crear_tablas
 
 
-def main():
+def main() -> None:
     """Crea las tablas registradas en los modelos."""
     crear_tablas()
     print("Tablas creadas correctamente en PostgreSQL.")
