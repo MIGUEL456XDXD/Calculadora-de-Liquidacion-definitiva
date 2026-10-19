@@ -1,4 +1,3 @@
-
 """Conexión de SQLAlchemy con PostgreSQL."""
 
 import os
@@ -6,11 +5,19 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+try:
+    import secret_config  # type: ignore
+    DATABASE_URL = getattr(secret_config, "DATABASE_URL", None)
+except ImportError:
+    DATABASE_URL = None
+
+if not DATABASE_URL:
+    DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
     raise RuntimeError(
-        "Configura la variable de entorno DATABASE_URL antes de ejecutar."
+        "Configura secret_config.py o la variable de entorno DATABASE_URL "
+        "antes de ejecutar."
     )
 
 engine = create_engine(DATABASE_URL)
@@ -25,8 +32,3 @@ SessionLocal = sessionmaker(
     autoflush=False,
     expire_on_commit=False,
 )
-
-
-def crear_tablas() -> None:
-    """Crea las tablas registradas en los modelos ORM."""
-    Base.metadata.create_all(bind=engine)
