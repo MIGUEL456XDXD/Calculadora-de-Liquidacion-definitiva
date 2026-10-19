@@ -1,7 +1,7 @@
-
 """Modelo ORM para almacenar liquidaciones definitivas."""
 
 from datetime import date
+from decimal import Decimal
 
 from sqlalchemy import Boolean, Date, Integer, Numeric
 from sqlalchemy.orm import Mapped, mapped_column
@@ -19,6 +19,6 @@ class ModeloLiquidacion(Base):
     )
     fecha_ingreso: Mapped[date] = mapped_column(Date, nullable=False)
     fecha_retiro: Mapped[date] = mapped_column(Date, nullable=False)
-    salario: Mapped[float] = mapped_column(Numeric(12, 2), nullable=False)
+    salario: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
     dias_trabajados: Mapped[int] = mapped_column(Integer, nullable=False)
     salario_integral: Mapped[bool] = mapped_column(Boolean, nullable=False)
